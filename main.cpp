@@ -12,10 +12,10 @@ using namespace std;
 const int SZ_NAMES = 200, SZ_COLORS = 25;
 
 int main_menu();
-int add_goat(list<Goat> &trip, string names[], string colors[]);
+void add_goat(list<Goat> &trip, string names[], string colors[]);
 void delete_goat(list<Goat> &trip);
 void display_trip(const list<Goat> &trip);
-void select_goat (const list<Goat> trip);
+int select_goat (const list<Goat> &trip);
 
 void sort_goats(list<Goat> &trip);
 void find_oldest_goat(const list<Goat> &trip);
@@ -94,7 +94,7 @@ int main_menu() {
     cout << "Choice --> ";
     int choice;
     cin >> choice;
-    while (choice < 1 || choice > 4) {
+    while (choice < 1 || choice > 11) {
         cout << "Invalid, again --> ";
         cin >> choice;
     }
@@ -106,17 +106,25 @@ void delete_goat(list<Goat> &trip) {
         cout << "No goats to delete.\n";
         return;
     }
+    int n = select_goat(trip);
+    auto it = trip.begin();
+    advance(it, n - 1);
+    cout << "Deleting goat: ";
+    it->display();
+    trip.erase(it);
+    cout << "Goat deleted. New trip size: " << trip.size() << endl;
+}
 
-void add_goat(list<Goat> &trip, string nms[], string cls[]) {
+void add_goat(list<Goat> &trip, string names[], string colors[]) {
     int age = rand() % MAX_AGE;
-    string nm = nms[rand() % SZ_NAMES];
-    string cl = cls[rand() % SZ_COLORS];
+    string nm = names[rand() % SZ_NAMES];
+    string cl = colors[rand() % SZ_COLORS];
     Goat tmp(nm, age, cl);
     trip.push_back(tmp);
     cout << "Goat added. New trip size: " << trip.size() << endl;
 }
 
-void display_trip(list<Goat> trp) {
+void display_trip(const list<Goat> &trip) {
     if (trip.empty()) {
         cout << "No goats to show.\n";
         return;
@@ -127,6 +135,7 @@ void display_trip(list<Goat> trp) {
         g.display();
     }
 }
+
 
 int select_goat(const list<Goat> &trip) {
     display_trip(trip);
@@ -153,11 +162,45 @@ void find_oldest_goat(const list<Goat> &trip) {
         return;
     }
     auto oldest = max_element(trip.begin(), trip.end(),
-        [](const Goat &1, const Goat &2) {
+        [](const Goat &a, const Goat &b) {
             return a.get_age() < b.get_age();
         });
     cout << "Oldest goat: ";
     oldest->display();
 }
-    return;
+  
+void count_color(const list<Goat> &trip) {
+    string color;
+    cout << "Enter color to count: ";
+    cin >> color;
+    int count = count_if(trip.begin(), trip.end(),
+        [&](const Goat &g) { return g.get_color() == color; });
+    cout << "There are " << count << " goats with color " << color << ".\n";
+}
+
+void remove_old_goats(list<Goat> &trip) {
+    int age;
+    cout << "Remove goats older than what age? ";
+    cin >> age;
+    trip.remove_if([&](const Goat &g) { return g.get_age() > age; });
+    cout << "Remaining goats: " << trip.size() << endl;
+}
+
+void shuffle_goats(list<Goat> &trip) {
+    vector<Goat> v(trip.begin(), trip.end());
+    random_device rd;
+    mt19937 g(rd());
+    shuffle(v.begin(), v.end(), g);
+    trip.assign(v.begin(), v.end());
+    cout << "Goats shuffled.\n";
+}
+
+void reverse_goats(list<Goat> &trip) {
+    trip.reverse();
+    cout << "Goats reversed.\n";
+}
+
+void clear_goats(list<Goat> &trip) {
+    trip.clear();
+    cout << "All goats cleared.\n";
 }

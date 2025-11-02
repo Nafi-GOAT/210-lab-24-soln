@@ -3,6 +3,9 @@
 #ifndef GOAT_H
 #define GOAT_H
 #include <iostream>
+#include <iomanip>
+#include <string>
+#include <cstdlib>
 using namespace std;
 
 const int MAX_AGE = 20;
@@ -27,6 +30,13 @@ public:
     bool operator< (const Goat &other) const {
         return name < other.name;
     }
+
+        void display() const {
+        cout << left << setw(12) << name
+             << " Age: " << setw(2) << age
+             << " Color: " << color << endl;
+    }
+
 };
 
 #endif

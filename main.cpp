@@ -2,16 +2,28 @@
 #include <fstream>
 #include <iomanip>
 #include <list>
+#include <algorithm>
+#include <cstdlib>
+#include <ctime>
+#include <random>
 #include "Goat.h"
 using namespace std;
 
 const int SZ_NAMES = 200, SZ_COLORS = 25;
 
-int select_goat(list<Goat> trip);
-void delete_goat(list<Goat> &trip);
-void add_goat(list<Goat> &trip, string [], string []);
-void display_trip(list<Goat> trip);
 int main_menu();
+int add_goat(list<Goat> &trip, string names[], string colors[]);
+void delete_goat(list<Goat> &trip);
+void display_trip(const list<Goat> &trip);
+void select_goat (const list<Goat> trip);
+
+void sort_goats(list<Goat> &trip);
+void find_oldest_goat(const list<Goat> &trip);
+void count_color(const list<Goat> &trip);
+void remove_old_goats(list<Goat> &trip);
+void shuffle_goats(list<Goat> &trip);
+void reverse_goats(list<Goat> &trip);
+void clear_goats(list<Goat> &trip);
 
 int main() {
     srand(time(0));
@@ -114,15 +126,5 @@ void display_trip(list<Goat> trp) {
              << ", " << gt.get_color() << ")\n";
 }
 
-int select_goat(list<Goat> trp) {
-    int input;
-    cout << "Make a selection:\n";
-    display_trip(trp);
-    cout << "Choice --> ";
-    cin >> input;
-    while (input < 1 or input > trp.size()) {
-        cout << "Invalid choice, again --> ";
-        cin >> input;
-    }
     return input;
 }

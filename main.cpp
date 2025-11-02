@@ -27,24 +27,22 @@ void clear_goats(list<Goat> &trip);
 
 int main() {
     srand(time(0));
-    bool again;
+    bool again = true;
 
     // read & populate arrays for names and colors
     ifstream fin("names.txt");
     string names[SZ_NAMES];
     int i = 0;
-    while (fin >> names[i++]);
+    while (i < SZ_NAMES && fin >> names[i]) i++;
     fin.close();
     ifstream fin1("colors.txt");
     string colors[SZ_COLORS];
     i = 0;
-    while (fin1 >> colors[i++]);
+    while (i < SZ_COLORS && fin1 >> colors[i]) i++;
     fin1.close();
-
     // create & populate a trip of Goats using std::list of random size 8-15
     int tripSize = rand() % 8 + 8;
     list<Goat> trip;
-    int age;
     string name, color;
     for (int i = 0; i < tripSize; i++) {
         age = rand() % MAX_AGE;  // defined in Goat.h

@@ -40,16 +40,18 @@ int main() {
     i = 0;
     while (i < SZ_COLORS && fin1 >> colors[i]) i++;
     fin1.close();
+
+
     // create & populate a trip of Goats using std::list of random size 8-15
     int tripSize = rand() % 8 + 8;
     list<Goat> trip;
     string name, color;
     for (int i = 0; i < tripSize; i++) {
-        age = rand() % MAX_AGE;  // defined in Goat.h
-        name = names[rand() % SZ_NAMES];
-        color = colors[rand() % SZ_COLORS];
+        int age = rand() % MAX_AGE;  // defined in Goat.h
+        string name = names[rand() % SZ_NAMES];
+        string color = colors[rand() % SZ_COLORS];
         Goat tmp(name, age, color);
-        trip.push_back(tmp);
+        trip.push_back(Goat(name, age, color));
     }
     
     // Goat Manager 3001 Engine

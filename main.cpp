@@ -139,6 +139,25 @@ int select_goat(const list<Goat> &trip) {
     }
     return n;
 }
+ 
+void sort_goats(list<Goat> &trip) {
+    trip.sort([](const Goat &a, const Goat &b) {
+        return a.get_name() < b.get_name();
+    });
+    cout << "Goats sorted by name.\n";
+}
 
+void find_oldest_goat(const list<Goat> &trip) {
+    if (trip.empty()) {
+        cout << "No goats.\n";
+        return;
+    }
+    auto oldest = max_element(trip.begin(), trip.end(),
+        [](const Goat &1, const Goat &2) {
+            return a.get_age() < b.get_age();
+        });
+    cout << "Oldest goat: ";
+    oldest->display();
+}
     return;
 }

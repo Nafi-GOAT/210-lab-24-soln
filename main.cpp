@@ -54,29 +54,26 @@ int main() {
         trip.push_back(Goat(name, age, color));
     }
     
-    // Goat Manager 3001 Engine
-    int sel = main_menu();
-    while (sel != 4) {
-        switch (sel) {
-            case 1:
-                cout << "Adding a goat.\n";
-                add_goat(trip, names, colors);
-                break;
-            case 2:    
-                cout << "Removing a goat.\n";
-                delete_goat(trip);
-                break;
-            case 3:    
-                cout << "Displaying goat data.\n";
-                display_trip(trip);
-                break;
-            default:
-                cout << "Invalid selection.\n";
-                break;
+    while (again) {
+        int choice = main_menu();
+        cout << endl;
+
+        switch (choice) {
+            case 1: add_goat(trip, names, colors); break;
+            case 2: delete_goat(trip); break;
+            case 3: display_trip(trip); break;
+            case 4: sort_goats(trip); break;
+            case 5: find_oldest_goat(trip); break;
+            case 6: count_color(trip); break;
+            case 7: remove_old_goats(trip); break;
+            case 8: shuffle_goats(trip); break;
+            case 9: reverse_goats(trip); break;
+            case 10: clear_goats(trip); break;
+            case 11: again = false; break;
         }
-        sel = main_menu();
+
+        cout << endl;
     }
-    
 
     return 0;
 }
@@ -86,7 +83,14 @@ int main_menu() {
     cout << "[1] Add a goat\n";
     cout << "[2] Delete a goat\n";
     cout << "[3] List goats\n";
-    cout << "[4] Quit\n";
+    cout << "[4] Sort goats by name\n";
+    cout << "[5] Find oldest goat\n";
+    cout << "[6] Count goats by color\n";
+    cout << "[7] Remove goats older than a certain age\n";
+    cout << "[8] Shuffle goats\n";
+    cout << "[9] Reverse order of goats\n";
+    cout << "[10] Clear all goats\n";
+    cout << "[11] Quit\n";
     cout << "Choice --> ";
     int choice;
     cin >> choice;
@@ -98,16 +102,12 @@ int main_menu() {
 }
 
 void delete_goat(list<Goat> &trip) {
-    cout << "DELETE A GOAT\n";
-    int index = select_goat(trip);
-    auto it = trip.begin();
-    advance(it, index-1);
-    trip.erase(it);
-    cout << "Goat deleted. New trip size: " << trip.size() << endl;
-}
+        if (trip.empty()) {
+        cout << "No goats to delete.\n";
+        return;
+    }
 
 void add_goat(list<Goat> &trip, string nms[], string cls[]) {
-    cout << "ADD A GOAT\n";
     int age = rand() % MAX_AGE;
     string nm = nms[rand() % SZ_NAMES];
     string cl = cls[rand() % SZ_COLORS];
@@ -117,14 +117,28 @@ void add_goat(list<Goat> &trip, string nms[], string cls[]) {
 }
 
 void display_trip(list<Goat> trp) {
+    if (trip.empty()) {
+        cout << "No goats to show.\n";
+        return;
+    }
     int i = 1;
-    for (auto gt: trp)
-        cout << "\t" 
-             << "[" << i++ << "] "
-             << gt.get_name() 
-             << " (" << gt.get_age() 
-             << ", " << gt.get_color() << ")\n";
+    for (const Goat &g : trip) {
+        cout << "[" << setw(2) << i++ << "] ";
+        g.display();
+    }
 }
 
-    return input;
+int select_goat(const list<Goat> &trip) {
+    display_trip(trip);
+    cout << "Select goat #: ";
+    int n;
+    cin >> n;
+    while (n < 1 || n > trip.size()) {
+        cout << "Invalid choice. Try again: ";
+        cin >> n;
+    }
+    return n;
+}
+
+    return;
 }
